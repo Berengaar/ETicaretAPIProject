@@ -39,3 +39,4 @@ C:\Users\Lenovo\OneDrive\Masaüstü\ETicaretUygulamasi\ETicaretAPI\Presentation\
 C:\Users\Lenovo\OneDrive\Masaüstü\ETicaretUygulamasi\ETicaretAPI\Presentation\ETicaretAPI.API\bin\Debug\net6.0\Microsoft.Extensions.Caching.Memory.dll
 C:\Users\Lenovo\OneDrive\Masaüstü\ETicaretUygulamasi\ETicaretAPI\Presentation\ETicaretAPI.API\bin\Debug\net6.0\Npgsql.dll
 C:\Users\Lenovo\OneDrive\Masaüstü\ETicaretUygulamasi\ETicaretAPI\Presentation\ETicaretAPI.API\bin\Debug\net6.0\Npgsql.EntityFrameworkCore.PostgreSQL.dll
+C:\Users\Lenovo\OneDrive\Masaüstü\ETicaretUygulamasi\ETicaretAPI\Presentation\ETicaretAPI.API\bin\Debug\net6.0\Microsoft.Extensions.Configuration.dll
