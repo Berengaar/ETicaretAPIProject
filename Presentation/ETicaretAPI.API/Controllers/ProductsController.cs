@@ -1,4 +1,5 @@
-﻿using ETicaretAPI.Application.Abstraction;
+﻿using ETicaretAPI.Application.Repositories;
+using ETicaretAPI.Domain.Entities;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -8,17 +9,34 @@ namespace ETicaretAPI.API.Controllers
     [ApiController]
     public class ProductsController : ControllerBase
     {
-        private readonly IProductService _productService;
-
-        public ProductsController(IProductService productService)
+        private readonly IProductReadRepository _productReadRepository;
+        private readonly IProductWriteRepository _productWriteRepository;
+        public ProductsController(IProductReadRepository productReadRepository, IProductWriteRepository productWriteRepository)
         {
-            _productService = productService;
+            _productReadRepository = productReadRepository;
+            _productWriteRepository = productWriteRepository;
         }
+
         [HttpGet]
-        public IActionResult GetProducts()
+        [Route("all")]
+        public IActionResult GetAll()
         {
-            var products=_productService.GetProducts();
-            return Ok(products);
+            var products = _productReadRepository.GetAll().ToList();
+            if(products.Count>-1)
+                return Ok(products);
+            else return NoContent();
+        }
+
+        [HttpPost]
+        [Route("Posting")]
+        public async Task<IActionResult> AddAsync(Product product)
+        {
+            var state=await _productWriteRepository.AddAsync(product);
+            if (state)
+            {
+                return Created("~api/Products", product);
+            }
+            else return BadRequest("Model is not true");
         }
     }
 }
