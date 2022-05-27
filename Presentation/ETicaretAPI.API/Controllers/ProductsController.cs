@@ -2,6 +2,7 @@
 using ETicaretAPI.Domain.Entities;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.Net;
 
 namespace ETicaretAPI.API.Controllers
 {
@@ -21,22 +22,40 @@ namespace ETicaretAPI.API.Controllers
         [Route("all")]
         public IActionResult GetAll()
         {
-            var products = _productReadRepository.GetAll().ToList();
-            if(products.Count>-1)
-                return Ok(products);
-            else return NoContent();
+            try
+            {
+                var products = _productReadRepository.GetAll().ToList();
+                if (products.Count > -1)
+                    return Ok(products);
+                else return NoContent();
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500,ex.Message);
+            }
+          
         }
 
         [HttpPost]
-        [Route("Posting")]
-        public async Task<IActionResult> AddAsync(Product product)
+        [Route("SeedPosting")]
+        public async Task<IActionResult> AddAsync()
         {
-            var state=await _productWriteRepository.AddAsync(product);
-            if (state)
+            try
             {
-                return Created("~api/Products", product);
+                await _productWriteRepository.AddRangeAsync(new()
+                {
+                    new() { Id = Guid.NewGuid(), Name = "Product 1", Price = 100, CreatedDate = DateTime.UtcNow, Stock = 10 },
+                    new() { Id = Guid.NewGuid(), Name = "Product 2", Price = 200, CreatedDate = DateTime.UtcNow, Stock = 5 },
+                    new() { Id = Guid.NewGuid(), Name = "Product 3", Price = 300, CreatedDate = DateTime.UtcNow, Stock = 8 },
+                });
+                await _productWriteRepository.SaveAsync();
+                return Ok();
             }
-            else return BadRequest("Model is not true");
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.Message);
+            }
+            
         }
     }
 }
