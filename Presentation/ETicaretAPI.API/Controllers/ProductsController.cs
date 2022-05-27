@@ -31,14 +31,14 @@ namespace ETicaretAPI.API.Controllers
             }
             catch (Exception ex)
             {
-                return StatusCode(500,ex.Message);
+                return StatusCode(500, ex.Message);
             }
-          
+
         }
 
         [HttpPost]
         [Route("SeedPosting")]
-        public async Task<IActionResult> AddAsync()
+        public async Task AddAsync()
         {
             try
             {
@@ -49,13 +49,27 @@ namespace ETicaretAPI.API.Controllers
                     new() { Id = Guid.NewGuid(), Name = "Product 3", Price = 300, CreatedDate = DateTime.UtcNow, Stock = 8 },
                 });
                 await _productWriteRepository.SaveAsync();
-                return Ok();
             }
             catch (Exception ex)
             {
-                return StatusCode(500, ex.Message);
+
             }
-            
+
+        }
+
+        [HttpGet("{id}")]
+        public async Task<IActionResult> Get(string id)
+        {
+            Product product = await _productReadRepository.GetByIdAsync(id);
+            return Ok(product);
+        }
+
+        [HttpPut]
+        public async Task UpdateProduct(string id)
+        {
+            Product product = await _productReadRepository.GetByIdAsync("a7bd9ee7-f39f-4d66-8900-8dba4b9e5f1b");
+            product.Name = "Ahmet";
+            await _productWriteRepository.SaveAsync();
         }
     }
 }
